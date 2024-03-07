@@ -8,12 +8,23 @@ from app.models import UserProfile
 from app.forms import LoginForm
 from app.forms import UploadForm
 from flask import send_from_directory
-from .helpers import get_uploaded_images
+
 
 
 ###
 # Routing for your application.
 ###
+
+def get_uploaded_images():
+    """
+    Retrieve the list of image filenames in the upload folder.
+    """
+    upload_folder = app.config['UPLOAD_FOLDER']  # Assuming this is the name of your upload folder
+    images = []
+    for filename in os.listdir(upload_folder):
+        if filename.endswith(('.jpg', '.jpeg', '.png', '.gif')):
+            images.append(filename)
+    return images
 
 @app.route('/')
 def home():
@@ -24,7 +35,7 @@ def home():
 @app.route('/about/')
 def about():
     """Render the website's about page."""
-    return render_template('about.html', name="Mary Jane")
+    return render_template('about.html', name="Shauna Smith")
 
 
 @app.route('/upload', methods=['POST', 'GET'])
